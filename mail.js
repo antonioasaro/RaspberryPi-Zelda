@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
     port: 587,
     auth: {
         user: 'raspberrypi@asarotools.com',
-        pass: 'fawnridge'
+        pass: '***'
     }
 });
 
