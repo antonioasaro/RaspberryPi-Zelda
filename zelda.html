@@ -6,78 +6,55 @@
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   	</head>
     <body>
-		<h2>Project Zelda Poops Chart</h2>
+		<h2>Hourly Deposits</h2>
 		<div id="canvas" style="height: 300px; width: 100%;"></div>
 
     <script>
         var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-		var labelXaxis;
-	    var dataYaxis;
-		var barChartData;
+		var dataX;
+	    var dataY;
 		var barChart;
+        var dataXY = [];
 
-        function initBarChartData() {
+        function initBarChartVar() {
             barChart = new CanvasJS.Chart("canvas", {
                 zoomEnabled: true,
                 panEnabled: true,
                 title: {
-                  text: "Deposits"
+                  text: ""
                 },
                 data: [
                 {
                   type: "column",
-                  dataPoints: [
-                  { x: 1, y: 10 },
-                  { x: 2, y: 15 },
-                  { x: 3, y: 25 },
-                  { x: 4, y: 30 },
-                  { x: 5, y: 28 },
-                  { x: 6, y: 10 },
-                  { x: 7, y: 15 },
-                  { x: 8, y: 25 },
-                  { x: 9, y: 30 },
-                  { x: 10, y: 28 },
-                  { x: 11, y: 10 },
-                  { x: 12, y: 15 },
-                  { x: 13, y: 25 },
-                  { x: 14, y: 30 },
-                  { x: 15, y: 28 },
-                  { x: 16, y: 10 },
-                  { x: 17, y: 15 },
-                  { x: 20, y: 25 },
-                  { x: 21, y: 30 },
-                  { x: 25, y: 28 },
-                  { x: 26, y: 10 },
-                  { x: 27, y: 15 },
-                  { x: 28, y: 25 },
-                  { x: 30, y: 30 },
-                  { x: 40, y: 28 },
-                  { x: 48, y: 12 }
-                  ]
+                  dataPoints: dataXY
                 }
                 ]
             });
 		}
 
         function drawBarChart() {
-			labelXaxis = ["Jan","Feb","Mar","Apr","May","Jun","Jul",
-			              "Jan","Feb","Mar","Apr","May","Jun","Jul",
-			              "Jan","Feb","Mar","Apr","May","Jun","Jul",
-			              "Jan","Feb","Mar","Apr","May","Jun","Jul"];
-		    dataYaxis  = [   12,   50,   35,   17,  60,   23,   29,
-		                     12,   50,   35,   17,  60,   23,   29,
-		                     12,   50,   35,   17,  60,   23,   29,
-		                     12,   50,   35,   17,  60,   23,   29,
-		                     12,   50,   35,   17,  60,   23,   29];
 			$.get('./zelda.log', function(result) {
-				var lines  = result.replace(/\n$/g, '').split('\n');
-				for (i = 0; i < lines.length; i++) {
-					labelXaxis[i] = lines[i].substr(0, 14);
-					dataYaxis[i] = lines[i].substr(lines[i].length-4);
+				var lines = result.replace(/\n$/g, '').split('\n');
+				var date = new Date();
+				for (i = 0; i < 1*24; i++) {
+                    dataXY[i] = { x: i, y: 0, label: "" };
 				}
-//				alert("####" + lines + "****");
+//				for (i = 0; i < lines.length; i++) {
+				for (i = 0; i < 1; i++) {
+					year  = Number(lines[i].substr(0,  4));
+					month = Number(lines[i].substr(4,  2));
+					day   = Number(lines[i].substr(6,  2));
+					hour  = Number(lines[i].substr(8,  2));
+					min   = Number(lines[i].substr(10, 2));
+					sec   = Number(lines[i].substr(12, 2));
+					dateX = new Date(year,month,day,hour,min,sec);
+					dataXY[i].x = i;
+					dataXY[i].label = dateX;
 
-			    initBarChartData();
+					dataY = lines[i].substr(lines[i].length-4);
+					dataXY[i].y = Number(dataY);
+				}
+			    initBarChartVar();
                 barChart.render();
 			});
 		}
