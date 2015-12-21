@@ -1,0 +1,4 @@
+sudo hciconfig hci0 up
+hciconfig
+sudo node zelda.js &
+
