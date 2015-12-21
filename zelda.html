@@ -6,15 +6,14 @@
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   	</head>
     <body>
-		<h2>Hourly Deposits</h2>
+		<h3>Deposits in the last 72 hrs</h3>
 		<div id="canvas" style="height: 300px; width: 100%;"></div>
 
     <script>
-        var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-		var dataX;
-	    var dataY;
-		var barChart;
+		var days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
+		var dataX, dataY;
         var dataXY = [];
+		var barChart;
 
         function initBarChartVar() {
             barChart = new CanvasJS.Chart("canvas", {
@@ -23,6 +22,16 @@
                 title: {
                   text: ""
                 },
+				axisX: {
+				    title: "Hours ago ...",
+					titleFontSize: 24,
+					titleFontColor: "green"
+				},
+				axisY: {
+				    title: "Total secs",
+					titleFontSize: 24,
+					titleFontColor: "green"
+				},
                 data: [
                 {
                   type: "column",
@@ -36,23 +45,24 @@
 			$.get('./zelda.log', function(result) {
 				var lines = result.replace(/\n$/g, '').split('\n');
 				var date = new Date();
-				for (i = 0; i < 1*24; i++) {
+				for (i = 0; i < 3*24; i++) {
                     dataXY[i] = { x: i, y: 0, label: "" };
 				}
-//				for (i = 0; i < lines.length; i++) {
-				for (i = 0; i < 1; i++) {
+				for (i = 0; i < lines.length; i++) {
 					year  = Number(lines[i].substr(0,  4));
-					month = Number(lines[i].substr(4,  2));
+					month = Number(lines[i].substr(4,  2))-1;
 					day   = Number(lines[i].substr(6,  2));
 					hour  = Number(lines[i].substr(8,  2));
 					min   = Number(lines[i].substr(10, 2));
 					sec   = Number(lines[i].substr(12, 2));
 					dateX = new Date(year,month,day,hour,min,sec);
-					dataXY[i].x = i;
-					dataXY[i].label = dateX;
+					delta = Math.round(Math.abs(date - dateX) / (1000 * 60 * 60));
+					if (delta < 3*24) {
+						dataXY[delta].label = days[dateX.getDay()] + " " + ((hour > 12) ? (hour - 12) : hour) + ":" + "00" + ((hour > 12) ? "pm" : "am");;
+					    dataY = lines[i].substr(lines[i].length-4);
+					    dataXY[delta].y += Number(dataY);
+					}
 
-					dataY = lines[i].substr(lines[i].length-4);
-					dataXY[i].y = Number(dataY);
 				}
 			    initBarChartVar();
                 barChart.render();
@@ -66,4 +76,3 @@
     </body>
 	<link rel="stylesheet" type="text/css" href="zelda.css">
 </html>
-
