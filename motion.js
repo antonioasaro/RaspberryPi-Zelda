@@ -51,16 +51,18 @@ motion.watch(function(err, value) {
 	if (err) throw err;
     date = new Date();
 	if (value==1) {
+		console.log("Motion on");
 		onDate = date;
 	} else {
+		console.log("Motion off");
 		delta = Math.round(Math.abs(date - onDate) / 1000);
 		log = getDateTime(date) + getDelta(delta); 
 		pirSensor[wrptr] = log;
+		logs.setBody(log);
+		logs.writeLog();
 		body = dateFormat(date, "mmm dd, yyyy HH:MM:ss") + " - " + delta + " secs";
 		mail.setBody(body);
 		mail.sendMail();
-		logs.setBody(log);
-		logs.writeLog();
 		ftp.put();
 		wrptr = (wrptr + 1) % MAXDEPTH;
 		console.log(log);

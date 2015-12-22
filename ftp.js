@@ -11,11 +11,12 @@ var Ftp = new JSFtp({
 
 var disconnect = function() {
     Ftp.raw.quit(function(err, data) {
-//    	console.log("quit");
+    	console.log("Quit ftp session");
    	});
 }
 
 var ls = function() {
+   	console.log("Calling ftp.ls");
     Ftp.ls(".", function(err, res) {
    	    console.log("Attempting to ftp.ls");
 		if (!err) {
@@ -29,8 +30,9 @@ var ls = function() {
 }
 
 var put = function() {
+   	console.log("Calling ftp.put");
     Ftp.put("./zelda.log", "./zelda.log", function(hadError) {
-   	    console.log("Attempting to ftp.put");
+   	    console.log("Attempted to ftp.put");
         if (!hadError) {
     	    console.log("Ftp sent: zelda.log");
 		} else {

@@ -24,9 +24,10 @@ var mailOptions = { from: from, to: to, subject: subj, text: text };
 // send mail with defined transport object
 sendMail = function() {
 	var delta = Math.round(Math.abs(date - lastSent) / (60 * 1000));
+	console.log("Calling sendMail with delta: " + delta);
 	if (delta > 10) {
 	    console.log('Attempting to email');
-		lastSent = date;
+		lastSent = new Date();
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
                 return console.log(error);
