@@ -1,6 +1,7 @@
 var gpio = require('onoff').Gpio;
 var mail = require('./mail');
 var logs = require('./logs');
+var ftp = require('./ftp');
 var dateFormat = require('dateformat');
 console.log("motion - echo");
 
@@ -60,6 +61,7 @@ motion.watch(function(err, value) {
 		mail.sendMail();
 		logs.setBody(log);
 		logs.writeLog();
+		ftp.put();
 		wrptr = (wrptr + 1) % MAXDEPTH;
 		console.log(log);
 	}

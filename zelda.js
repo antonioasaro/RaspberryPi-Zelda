@@ -30,10 +30,10 @@ bleno.on('advertisingStart', function(error) {
   }
 });
 
-fs.watch('./zelda.log', {
-	    persistent : true,
-	    interval : 15000
-    } ,
-	function(event, filename) {
-	    ftp.put();
-});
+// fs.watch('./zelda.log', {
+// 	    persistent : true,
+// 	    interval : 15000
+//     } ,
+// 	function(event, filename) {
+// 	    ftp.put();
+// });
