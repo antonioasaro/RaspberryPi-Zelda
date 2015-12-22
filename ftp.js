@@ -11,13 +11,13 @@ var Ftp = new JSFtp({
 
 var disconnect = function() {
     Ftp.raw.quit(function(err, data) {
-    	console.log("quit");
+//    	console.log("quit");
    	});
 }
 
 var ls = function() {
-   	console.log("Try 'ls' cmd");
     Ftp.ls(".", function(err, res) {
+   	    console.log("Attempting to ftp.ls");
 		if (!err) {
         	console.log("'ls' successful");
             res.forEach(function(file) {
@@ -30,8 +30,9 @@ var ls = function() {
 
 var put = function() {
     Ftp.put("./zelda.log", "./zelda.log", function(hadError) {
+   	    console.log("Attempting to ftp.put");
         if (!hadError) {
-    	    console.log("File transferred successfully");
+    	    console.log("Ftp sent: zelda.log");
 		} else {
     	    console.log("File transfer failed: " + hadError);
 		}
@@ -39,11 +40,5 @@ var put = function() {
     });
 }
 
-fs.watch('./zelda.log', {
-	    persistent : true,
-	    interval : 15000
-    } ,
-	function(event, filename) {
-  	    console.log('Ftp zelda.log');
-	    put();
-});
+module.exports.put = put;
+

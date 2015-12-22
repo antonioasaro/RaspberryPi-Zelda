@@ -1,7 +1,7 @@
 var util = require('util');
 var bleno = require('./bleno');
 var motion = require('./motion');
-console.log('characteristic - echo');
+console.log('char - echo');
 
 var index = 0;
 var BlenoCharacteristic = bleno.Characteristic;

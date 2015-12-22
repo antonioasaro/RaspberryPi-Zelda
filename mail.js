@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
     port: 587,
     auth: {
         user: 'raspberrypi@asarotools.com',
-        pass: '***'
+        pass: '****'
     }
 });
 
@@ -23,6 +23,7 @@ var mailOptions = { from: from, to: to, subject: subj, text: text };
 
 // send mail with defined transport object
 sendMail = function() {
+	console.log('Attempting to email');
 	var delta = Math.round(Math.abs(date - lastSent) / (60 * 1000));
 	if (delta > 10) {
 		lastSent = date;

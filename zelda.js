@@ -1,3 +1,4 @@
+var fs = require('fs');
 var bleno = require('./bleno');
 var BlenoPrimaryService = bleno.PrimaryService;
 var EchoCharacteristic = require('./characteristic');
@@ -27,4 +28,12 @@ bleno.on('advertisingStart', function(error) {
       })
     ]);
   }
+});
+
+fs.watch('./zelda.log', {
+	    persistent : true,
+	    interval : 15000
+    } ,
+	function(event, filename) {
+	    ftp.put();
 });
