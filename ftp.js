@@ -39,7 +39,11 @@ var put = function() {
     });
 }
 
-fs.watchFile('zelda.log', function(curr, prev) {
-	console.log('Ftp zelda.log at ' + curr.mtime);
-	put();
+fs.watch('./zelda.log', {
+	    persistent : true,
+	    interval : 15000
+    } ,
+	function(event, filename) {
+  	    console.log('Ftp zelda.log');
+	    put();
 });

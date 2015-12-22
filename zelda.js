@@ -1,6 +1,7 @@
 var bleno = require('./bleno');
 var BlenoPrimaryService = bleno.PrimaryService;
 var EchoCharacteristic = require('./characteristic');
+var ftp = require('./ftp');
 console.log('bleno - echo');
 
 bleno.on('stateChange', function(state) {
