@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 console.log('mail - echo');
 var date = new Date();
 var lastSent = new Date(date.getTime() - (15 * 60 * 1000));
+var delta;
 
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({
@@ -23,7 +24,8 @@ var mailOptions = { from: from, to: to, subject: subj, text: text };
 
 // send mail with defined transport object
 sendMail = function() {
-	var delta = Math.round(Math.abs(date - lastSent) / (60 * 1000));
+    date = new Date();
+	delta = Math.round(Math.abs(date - lastSent) / (60 * 1000));
 	console.log("Calling sendMail with delta: " + delta);
 	if (delta > 10) {
 	    console.log('Attempting to email');
