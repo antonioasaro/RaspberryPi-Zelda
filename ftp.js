@@ -6,7 +6,7 @@ var Ftp = new JSFtp({
     host: "ftp.asarotools.com",
     port: 21,
     user: "raspberrypi@asarotools.com",
-    pass: "****"
+    pass: "***"
 });
 
 var disconnect = function() {
@@ -30,9 +30,8 @@ var ls = function() {
 }
 
 var put = function() {
-   	console.log("Calling ftp.put");
+   	console.log("Attempting to ftp.put");
     Ftp.put("./zelda.log", "./zelda.log", function(hadError) {
-   	    console.log("Attempted to ftp.put");
         if (!hadError) {
     	    console.log("Ftp sent: zelda.log");
 		} else {

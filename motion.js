@@ -9,6 +9,8 @@ var wrptr = 0;
 var pirSensor = [];
 var MAXDEPTH = 16;
 var onDate;
+var offDate;
+var firstOn = 1;
 
 
 motion = new gpio(17, 'in', 'both');
@@ -46,26 +48,46 @@ function getDelta(delta) {
 
 process.on('SIGINT', exit);
 
+function processData() {
+	setTimeout(function() {
+		console.log("After timeout of 10 mins");
+		if (firstOn == 0) {
+			firstOn = 1;
+			pushData();
+		}
+
+	}, 1000*60*10);
+}
+
+function pushData() {
+		delta = Math.round(Math.abs(offDate - onDate) / 1000);
+		log = getDateTime(onDate) + getDelta(delta); 
+		pirSensor[wrptr] = log;
+		logs.setBody(log);
+		logs.writeLog();
+		body = dateFormat(onDate, "mmm dd, yyyy HH:MM:ss") + " - " + delta + " secs";
+		mail.setBody(body);
+		mail.sendMail();
+		ftp.put();
+		wrptr = (wrptr + 1) % MAXDEPTH;
+		console.log(log);
+};
+
 motion.watch(function(err, value) {
     var body, date, log;
 	if (err) throw err;
     date = new Date();
 	if (value==1) {
 		console.log("Motion on");
-		onDate = date;
+		if (firstOn == 1) {
+		    console.log("Motion onDate set");
+		    onDate = date;
+			firstOn = 0;
+		}
 	} else {
 		console.log("Motion off");
-		delta = Math.round(Math.abs(date - onDate) / 1000);
-		log = getDateTime(date) + getDelta(delta); 
-		pirSensor[wrptr] = log;
-		logs.setBody(log);
-		logs.writeLog();
-		body = dateFormat(date, "mmm dd, yyyy HH:MM:ss") + " - " + delta + " secs";
-		mail.setBody(body);
-		mail.sendMail();
-		ftp.put();
-		wrptr = (wrptr + 1) % MAXDEPTH;
-		console.log(log);
+		offDate = date;
+		processData();
 	}
 });
 
