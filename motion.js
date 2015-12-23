@@ -60,6 +60,7 @@ function processData() {
 }
 
 function pushData() {
+	    console.log("Dates: " + onDate + " " + offDate);
 		delta = Math.round(Math.abs(offDate - onDate) / 1000);
 		log = getDateTime(onDate) + getDelta(delta); 
 		pirSensor[wrptr] = log;
@@ -68,7 +69,7 @@ function pushData() {
 		body = dateFormat(onDate, "mmm dd, yyyy HH:MM:ss") + " - " + delta + " secs";
 		mail.setBody(body);
 		mail.sendMail();
-		ftp.put();
+		ftp.sendPut();
 		wrptr = (wrptr + 1) % MAXDEPTH;
 		console.log(log);
 };
