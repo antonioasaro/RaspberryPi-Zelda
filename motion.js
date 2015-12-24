@@ -48,8 +48,10 @@ function getDelta(delta) {
 
 process.on('SIGINT', exit);
 
+var timer = 0;;
 function processData() {
-	setTimeout(function() {
+	clearTimeout(timer);
+	timer = setTimeout(function() {
 		console.log("After timeout of 10 mins");
 		if (captureEn == 1) {
 			captureEn = 0;
