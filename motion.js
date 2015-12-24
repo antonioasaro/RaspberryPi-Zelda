@@ -10,7 +10,7 @@ var pirSensor = [];
 var MAXDEPTH = 16;
 var onDate;
 var offDate;
-var firstOn = 1;
+var captureEn = 0;
 
 
 motion = new gpio(17, 'in', 'both');
@@ -51,8 +51,8 @@ process.on('SIGINT', exit);
 function processData() {
 	setTimeout(function() {
 		console.log("After timeout of 10 mins");
-		if (firstOn == 0) {
-			firstOn = 1;
+		if (captureEn == 1) {
+			captureEn = 0;
 			pushData();
 		}
 
@@ -80,15 +80,18 @@ motion.watch(function(err, value) {
     date = new Date();
 	if (value==1) {
 		console.log("Motion on");
-		if (firstOn == 1) {
-		    console.log("Motion onDate set");
+		if (captureEn == 0) {
+		    console.log("Motion onDate set " + date);
 		    onDate = date;
-			firstOn = 0;
+			captureEn = 1;
 		}
 	} else {
 		console.log("Motion off");
-		offDate = date;
-		processData();
+		if (captureEn == 1) {
+	        console.log("Motion offDate set " + date);
+		    offDate = date
+		    processData();
+		}
 	}
 });
 
