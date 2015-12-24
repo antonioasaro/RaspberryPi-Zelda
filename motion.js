@@ -50,12 +50,11 @@ process.on('SIGINT', exit);
 
 var timer = 0;;
 function processData() {
-	clearTimeout(timer);
 	timer = setTimeout(function() {
 		console.log("After timeout of 10 mins");
 		if (captureEn == 1) {
-			captureEn = 0;
 			pushData();
+			captureEn = 0;
 		}
 
 	}, 1000*60*10);
@@ -82,6 +81,7 @@ motion.watch(function(err, value) {
     date = new Date();
 	if (value==1) {
 		console.log("Motion on");
+	    clearTimeout(timer);
 		if (captureEn == 0) {
 		    console.log("Motion onDate set " + date);
 		    onDate = date;
@@ -89,6 +89,7 @@ motion.watch(function(err, value) {
 		}
 	} else {
 		console.log("Motion off");
+	    clearTimeout(timer);
 		if (captureEn == 1) {
 	        console.log("Motion offDate set " + date);
 		    offDate = date

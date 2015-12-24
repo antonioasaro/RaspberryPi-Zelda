@@ -26,7 +26,7 @@ var mailOptions = { from: from, to: to, subject: subj, text: text };
 sendMail = function() {
     date = new Date();
 	delta = Math.round(Math.abs(date - lastSent) / (60 * 1000));
-	if (delta > 10) {
+	if (delta > 30) {
 	    console.log('Attempting to email');
 		lastSent = new Date();
         transporter.sendMail(mailOptions, function(error, info){
